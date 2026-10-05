@@ -1,0 +1,277 @@
+/* FitForge Dark Fitness Theme Styling */
+:root {
+  --bg-dark: #0a0a0c;
+  --card-bg: #141418;
+  --card-border: #22222a;
+  --accent-green: #10b981;
+  --accent-green-hover: #059669;
+  --accent-cyan: #06b6d4;
+  --text-primary: #f3f4f6;
+  --text-muted: #9ca3af;
+  --danger-red: #ef4444;
+  --radius-lg: 16px;
+  --radius-md: 10px;
+  --transition: all 0.25s ease-in-out;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 8%;
+  background: rgba(20, 20, 24, 0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--card-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: var(--accent-green);
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-left: 1.8rem;
+  font-weight: 500;
+  transition: var(--transition);
+}
+
+.nav-links a:hover, .nav-links a.active {
+  color: var(--accent-green);
+}
+
+.btn-primary {
+  background: var(--accent-green);
+  color: #000;
+  font-weight: 700;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary:hover {
+  background: var(--accent-green-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.35);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--text-primary);
+  border: 1px solid var(--card-border);
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-green);
+  color: var(--accent-green);
+}
+
+/* Hero Section */
+.hero {
+  padding: 6rem 8% 4rem;
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.hero h1 {
+  font-size: 3.2rem;
+  font-weight: 900;
+  line-height: 1.15;
+  margin-bottom: 1.2rem;
+}
+
+.hero h1 span {
+  color: var(--accent-green);
+}
+
+.hero p {
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  margin-bottom: 2.2rem;
+}
+
+.hero-btns {
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+/* Disclaimer Banner */
+.disclaimer-banner {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  padding: 1rem 8%;
+  text-align: center;
+  font-size: 0.9rem;
+  margin: 2rem 8%;
+  border-radius: var(--radius-md);
+}
+
+/* Feature Cards Grid */
+.features {
+  padding: 3rem 8% 5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.8rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  transition: var(--transition);
+}
+
+.feature-card:hover {
+  border-color: var(--accent-green);
+  transform: translateY(-5px);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.feature-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.6rem;
+}
+
+.feature-card p {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+}
+
+/* Onboarding Modal */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 580px;
+  padding: 2.5rem;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+}
+
+.close-modal {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.wizard-step {
+  display: none;
+}
+
+.wizard-step.active {
+  display: block;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  background: #0d0d11;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--accent-green);
+}
+
+.step-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.8rem;
+}
+
+.progress-dots {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  background: var(--card-border);
+  border-radius: 50%;
+}
+
+.dot.active {
+  background: var(--accent-green);
+}

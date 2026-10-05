@@ -1,0 +1,24 @@
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# Python Cache & Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite Database (Keep database clean for new users)
+fitforge.db
+*.sqlite3
+
+# Environment Variables / API Keys
+.env
+
+# Generated Matplotlib Charts
+frontend/generated_charts/
+
+# OS / Editor specific
+.DS_Store
+.vscode/
+.idea/

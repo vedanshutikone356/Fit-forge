@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitForge – Daily Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <style>
+    /* Dashboard-Specific Layouts */
+    .dashboard-container {
+      padding: 2rem 8%;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .welcome-header {
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .welcome-header h1 {
+      font-size: 2.2rem;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .metric-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      position: relative;
+    }
+    .metric-title {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+    .metric-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+    .metric-sub {
+      font-size: 0.85rem;
+      color: var(--accent-green);
+      margin-top: 0.4rem;
+    }
+    .progress-bar-bg {
+      width: 100%;
+      height: 8px;
+      background: #1f1f26;
+      border-radius: 4px;
+      margin-top: 0.8rem;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent-green);
+      width: 0%;
+      transition: width 0.5s ease;
+    }
+    .dashboard-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 900px) {
+      .dashboard-grid-2 { grid-template-columns: 1fr; }
+    }
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .exercise-item, .meal-item, .goal-item {
+      background: #0d0d11;
+      border: 1px solid var(--card-border);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 0.8rem;
+    }
+    .exercise-header {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+    }
+    .exercise-details {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+    .chart-container {
+      text-align: center;
+      margin-top: 1rem;
+    }
+    .chart-container img {
+      max-width: 100%;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--card-border);
+    }
+    .tips-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .tips-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .tips-list li:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">FIT<span>FORGE</span></div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/dashboard" class="active">Dashboard</a>
+    </div>
+  </nav>
+
+  <div class="dashboard-container">
+    
+    <!-- Welcome Header -->
+    <div class="welcome-header">
+      <div>
+        <h1 id="userGreeting">Good Day, Fitness Athlete! 🚀</h1>
+        <p style="color: var(--text-muted);" id="userGoalSub">Goal: Muscle Gain | Plan Active</p>
+      </div>
+      <div>
+        <a href="/" class="btn-secondary" style="font-size: 0.85rem;">Edit Profile / Reset</a>
+      </div>
+    </div>
+
+    <!-- Daily Metrics Row -->
+    <div class="grid-4">
+      <div class="metric-card">
+        <div class="metric-title">🔥 Calorie Target</div>
+        <div class="metric-value" id="calVal">0 kcal</div>
+        <div class="metric-sub" id="calSub">TDEE: -- kcal</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="calProgress" style="width: 75%;"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">💪 Protein Target</div>
+        <div class="metric-value" id="protVal">0 g</div>
+        <div class="metric-sub" id="macroSub">C: --g | F: --g</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="protProgress" style="width: 60%; background: var(--accent-cyan);"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">🚶 Daily Steps</div>
+        <div class="metric-value" id="stepVal">0</div>
+        <div class="metric-sub" id="stepSub">Target: 8,000</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="stepProgress" style="width: 50%;"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-title">💧 Water Target</div>
+        <div class="metric-value" id="waterVal">0 L</div>
+        <div class="metric-sub">Daily Hydration Goal</div>
+        <div class="progress-bar-bg"><div class="progress-bar-fill" style="width: 80%; background: #3b82f6;"></div></div>
+      </div>
+    </div>
+
+    <!-- Two Column Main Workspace -->
+    <div class="dashboard-grid-2">
+      
+      <!-- Column 1: Today's Workout Split -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>🏋️ Workout Routine</span>
+          <span style="font-size: 0.85rem; color: var(--accent-green);" id="workoutSplitName">Push / Pull / Legs</span>
+        </div>
+        <div id="workoutExerciseList">
+          <p style="color: var(--text-muted);">Loading workout schedule...</p>
+        </div>
+      </div>
+
+      <!-- Column 2: Today's Nutrition Plan -->
+      <div class="section-card">
+        <div class="section-title">
+          <span>🥗 Meal Plan</span>
+          <span style="font-size: 0.85rem; color: var(--accent-cyan);" id="dietPrefTag">Vegetarian</span>
+        </div>
+        <div id="nutritionMealList">
+          <p style="color: var(--text-muted);">Loading meal plan...</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Two Column Lower Workspace: Tracking & Analytics -->
+    <div class="dashboard-grid-2">
+      
+      <!-- Column 1: Interactive Daily Log & Stress Tips -->
+      <div class="section-card">
+        <div class="section-title"><span>📝 Log Today's Progress</span></div>
+        <form id="quickLogForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Steps Walked</label>
+            <input type="number" id="logSteps" class="form-control" placeholder="e.g. 8500">
+          </div>
+          <div class="form-group">
+            <label>Sleep Hours</label>
+            <input type="number" step="0.5" id="logSleep" class="form-control" placeholder="e.g. 7.5">
+          </div>
+          <div class="form-group">
+            <label>Water Drank (L)</label>
+            <input type="number" step="0.5" id="logWater" class="form-control" placeholder="e.g. 2.5">
+          </div>
+          <div class="form-group">
+            <label>Stress Level (1-10)</label>
+            <input type="number" id="logStress" class="form-control" placeholder="e.g. 4">
+          </div>
+          <div style="grid-column: span 2;">
+            <button type="submit" class="btn-primary" style="width: 100%;">Save Daily Activity Log</button>
+          </div>
+        </form>
+
+        <div style="margin-top: 2rem;">
+          <h4 style="margin-bottom: 0.8rem; font-size: 1.1rem;">🧠 Stress & Recovery Advice</h4>
+          <ul class="tips-list" id="stressTipsList">
+            <li>Loading stress management tips...</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Column 2: Matplotlib Chart & Productivity -->
+      <div class="section-card">
+        <div class="section-title"><span>📊 Analytics & Trends</span></div>
+        <div class="chart-container" id="chartContainer">
+          <p style="color: var(--text-muted);">Generating Matplotlib weekly progress chart...</p>
+        </div>
+
+        <div style="margin-top: 2rem;">
+          <div class="section-title" style="font-size: 1.1rem;">
+            <span>☐ Productivity Goals</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+            <input type="text" id="newGoalTitle" class="form-control" placeholder="Add daily task (e.g. Study DSA 1hr)">
+            <button class="btn-primary" id="addGoalBtn" style="white-space: nowrap;">Add</button>
+          </div>
+          <div id="productivityList">
+            <!-- Dynamic Goals list -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>

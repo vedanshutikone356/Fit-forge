@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FitForge – AI-Powered Personal Fitness & Lifestyle Planner</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">FIT<span>FORGE</span></div>
+    <div class="nav-links">
+      <a href="/" class="active">Home</a>
+      <a href="/dashboard">Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Your Body. Your Goals. <span>Your Plan.</span></h1>
+    <p>Build smarter workouts, smarter meals and healthier daily habits — all in one unified personal dashboard.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" id="openModalBtn">Get Started</button>
+      <a href="/dashboard" class="btn-secondary">View Dashboard</a>
+    </div>
+  </section>
+
+  <!-- Feature Cards Grid -->
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">🏋️</div>
+      <h3>Personalized Workouts</h3>
+      <p>Custom training splits based on your equipment, target days, and exercise experience level.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🥗</div>
+      <h3>Smart Nutrition</h3>
+      <p>Pandas-powered daily meal plans tailored to vegetarian, vegan, or non-veg preferences and macros.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">📈</div>
+      <h3>Progress Tracking</h3>
+      <p>Visual Matplotlib analytics for weight trends, steps, sleep score, and weekly workout completion.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">😴</div>
+      <h3>Sleep & Recovery</h3>
+      <p>Track optimal sleep hours, quality scores, and recovery readiness metrics.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🚶</div>
+      <h3>Steps & Activity</h3>
+      <p>Monitor step targets, daily distance, and energy expenditure throughout the week.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧠</div>
+      <h3>Stress & Productivity</h3>
+      <p>Self-reported stress management tips and habit-building daily productivity checklists.</p>
+    </div>
+  </section>
+
+  <!-- Disclaimer Banner (Bottom of Page) -->
+  <footer style="padding-bottom: 2rem;">
+    <div class="disclaimer-banner">
+      <strong>⚠️ Medical & Health Disclaimer:</strong> FitForge recommendations are for general fitness educational purposes only. Always consult a qualified physician or healthcare professional regarding injuries, medical conditions, or extreme diet changes.
+    </div>
+  </footer>
+
+  <!-- Onboarding Multi-Step Modal -->
+  <div class="modal-overlay" id="onboardingModal">
+    <div class="modal-content">
+      <button class="close-modal" id="closeModalBtn">&times;</button>
+      
+      <div class="progress-dots">
+        <div class="dot active" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+        <div class="dot" id="dot3"></div>
+        <div class="dot" id="dot4"></div>
+        <div class="dot" id="dot5"></div>
+      </div>
+
+      <form id="onboardingForm">
+        <!-- STEP 1: Basic Info -->
+        <div class="wizard-step active" id="step1">
+          <h2>Step 1: Basic Details</h2>
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="name" class="form-control" placeholder="Alex Dev" required value="Alex">
+          </div>
+          <div class="form-group">
+            <label>Age</label>
+            <input type="number" id="age" class="form-control" value="22" required>
+          </div>
+          <div class="form-group">
+            <label>Gender</label>
+            <select id="gender" class="form-control">
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Height (cm)</label>
+            <input type="number" id="height" class="form-control" value="175" required>
+          </div>
+          <div class="form-group">
+            <label>Weight (kg)</label>
+            <input type="number" id="weight" class="form-control" value="70" required>
+          </div>
+          <div class="step-buttons">
+            <div></div>
+            <button type="button" class="btn-primary" onclick="nextStep(1)">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Body / Physique -->
+        <div class="wizard-step" id="step2">
+          <h2>Step 2: Body & Training</h2>
+          <div class="form-group">
+            <label>Current Physique</label>
+            <select id="body_type" class="form-control">
+              <option value="Average">Average</option>
+              <option value="Lean">Lean</option>
+              <option value="Athletic">Athletic</option>
+              <option value="Muscular">Muscular</option>
+              <option value="Higher Body Fat">Higher Body Fat</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Training Experience</label>
+            <select id="experience" class="form-control">
+              <option value="Intermediate">Intermediate</option>
+              <option value="Beginner">Beginner</option>
+              <option value="Advanced">Advanced</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Days Available for Training per Week</label>
+            <select id="training_days" class="form-control">
+              <option value="4">4 Days</option>
+              <option value="2">2 Days</option>
+              <option value="3">3 Days</option>
+              <option value="5">5 Days</option>
+              <option value="6">6 Days</option>
+            </select>
+          </div>
+          <div class="step-buttons">
+            <button type="button" class="btn-secondary" onclick="prevStep(2)">&larr; Back</button>
+            <button type="button" class="btn-primary" onclick="nextStep(2)">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Fitness Goal -->
+        <div class="wizard-step" id="step3">
+          <h2>Step 3: Primary Fitness Goal</h2>
+          <div class="form-group">
+            <label>Goal</label>
+            <select id="fitness_goal" class="form-control">
+              <option value="Muscle Gain">Muscle Gain / Bulk</option>
+              <option value="Weight Loss">Weight Loss / Fat Loss</option>
+              <option value="Lean Bulk">Lean Bulk</option>
+              <option value="Maintain Weight">Maintain Weight</option>
+              <option value="Endurance">Endurance & Strength</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Target Weight (kg)</label>
+            <input type="number" id="target_weight" class="form-control" value="75" required>
+          </div>
+          <div class="form-group">
+            <label>Timeline (Weeks)</label>
+            <input type="number" id="timeline_weeks" class="form-control" value="12" required>
+          </div>
+          <div class="step-buttons">
+            <button type="button" class="btn-secondary" onclick="prevStep(3)">&larr; Back</button>
+            <button type="button" class="btn-primary" onclick="nextStep(3)">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 4: Lifestyle -->
+        <div class="wizard-step" id="step4">
+          <h2>Step 4: Lifestyle Habits</h2>
+          <div class="form-group">
+            <label>Average Daily Steps</label>
+            <input type="number" id="avg_steps" class="form-control" value="8000">
+          </div>
+          <div class="form-group">
+            <label>Average Sleep Hours</label>
+            <input type="number" step="0.5" id="avg_sleep" class="form-control" value="7.5">
+          </div>
+          <div class="form-group">
+            <label>Daily Stress Level (1 - 10)</label>
+            <input type="number" id="stress_level" class="form-control" min="1" max="10" value="5">
+          </div>
+          <div class="form-group">
+            <label>Dietary Preference</label>
+            <select id="diet_preference" class="form-control">
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Non-Vegetarian">Non-Vegetarian</option>
+              <option value="Vegan">Vegan</option>
+              <option value="Eggetarian">Eggetarian</option>
+            </select>
+          </div>
+          <div class="step-buttons">
+            <button type="button" class="btn-secondary" onclick="prevStep(4)">&larr; Back</button>
+            <button type="button" class="btn-primary" onclick="nextStep(4)">Next &rarr;</button>
+          </div>
+        </div>
+
+        <!-- STEP 5: Equipment & Submit -->
+        <div class="wizard-step" id="step5">
+          <h2>Step 5: Available Equipment</h2>
+          <div class="form-group">
+            <label>Equipment Access</label>
+            <select id="equipment" class="form-control">
+              <option value="Full Gym">Full Gym</option>
+              <option value="Dumbbells">Dumbbells Only</option>
+              <option value="Bodyweight only">Bodyweight Only</option>
+              <option value="Home Gym">Home Gym</option>
+            </select>
+          </div>
+          <div class="step-buttons">
+            <button type="button" class="btn-secondary" onclick="prevStep(5)">&larr; Back</button>
+            <button type="submit" class="btn-primary">Generate My Plan 🚀</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Modal Toggle Logic
+    const modal = document.getElementById('onboardingModal');
+    document.getElementById('openModalBtn').onclick = () => modal.classList.add('active');
+    document.getElementById('closeModalBtn').onclick = () => modal.classList.remove('active');
+
+    // Multi-Step Navigation Logic
+    function showStep(stepNum) {
+      document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.dot').forEach(el => el.classList.remove('active'));
+      document.getElementById('step' + stepNum).classList.add('active');
+      document.getElementById('dot' + stepNum).classList.add('active');
+    }
+
+    function nextStep(current) { showStep(current + 1); }
+    function prevStep(current) { showStep(current - 1); }
+
+    // Form Submission & API Call
+    document.getElementById('onboardingForm').onsubmit = async (e) => {
+      e.preventDefault();
+      const payload = {
+        name: document.getElementById('name').value,
+        age: parseInt(document.getElementById('age').value),
+        gender: document.getElementById('gender').value,
+        height: parseFloat(document.getElementById('height').value),
+        weight: parseFloat(document.getElementById('weight').value),
+        body_type: document.getElementById('body_type').value,
+        experience: document.getElementById('experience').value,
+        training_days: parseInt(document.getElementById('training_days').value),
+        fitness_goal: document.getElementById('fitness_goal').value,
+        target_weight: parseFloat(document.getElementById('target_weight').value),
+        timeline_weeks: parseInt(document.getElementById('timeline_weeks').value),
+        avg_steps: parseInt(document.getElementById('avg_steps').value),
+        avg_sleep: parseFloat(document.getElementById('avg_sleep').value),
+        stress_level: parseInt(document.getElementById('stress_level').value),
+        diet_preference: document.getElementById('diet_preference').value,
+        equipment: document.getElementById('equipment').value
+      };
+
+      try {
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await response.json();
+        if (data.status === 'success') {
+          localStorage.setItem('fitforge_user_id', data.user_id);
+          window.location.href = '/dashboard';
+        }
+      } catch (err) {
+        alert('Failed to save profile. Ensure backend is running.');
+      }
+    };
+  </script>
+</body>
+</html>
