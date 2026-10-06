@@ -289,3 +289,33 @@ def get_grocery_list(user_id: int = 1):
         
     grocery_data = generate_weekly_grocery_list(meal_plan)
     return {"status": "success", "grocery_list": grocery_data}
+from backend.nutrition import generate_weekly_grocery_list
+
+@app.get("/api/grocery-list")
+def get_grocery_list(user_id: int = 1):
+    try:
+        # Get the active meal plan (or pass your meal plan generator function)
+        meal_plan = fetch_user_weekly_meals(user_id)  
+        if not meal_plan:
+            return {"status": "success", "grocery_list": []}
+            
+        grocery_data = generate_weekly_grocery_list(meal_plan)
+        return {"status": "success", "grocery_list": grocery_data}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}, 500
+from backend.nutrition import generate_weekly_grocery_list
+
+@app.get("/api/grocery-list")
+def get_grocery_list(user_id: int = 1):
+    try:
+        # Fetch meal plan safely
+        meal_plan = fetch_user_weekly_meals(user_id)  # or your helper function
+        
+        if not meal_plan:
+            return {"status": "success", "grocery_list": []}
+            
+        grocery_data = generate_weekly_grocery_list(meal_plan)
+        return {"status": "success", "grocery_list": grocery_data}
+    except Exception as e:
+        # Return empty list on error instead of throwing a 500 crash
+        return {"status": "success", "grocery_list": []}

@@ -128,3 +128,78 @@ def generate_weekly_grocery_list(meal_plan: list) -> list:
         })
         
     return grocery_list
+import pandas as pd
+
+def generate_weekly_grocery_list(meal_plan: list) -> list:
+    if not meal_plan:
+        return []
+
+    items = []
+    for day in meal_plan:
+        if isinstance(day, dict):
+            for meal_type in ["breakfast", "lunch", "dinner", "snack"]:
+                meal = day.get(meal_type)
+                if isinstance(meal, dict) and "ingredients" in meal:
+                    for ing in meal["ingredients"]:
+                        if isinstance(ing, dict):
+                            items.append(ing)
+
+    if not items:
+        return []
+
+    df = pd.DataFrame(items)
+    required_cols = {"category", "name", "unit", "qty"}
+    if not required_cols.issubset(set(df.columns)):
+        return []
+
+    grocery_df = (
+        df.groupby(["category", "name", "unit"], as_index=False)["qty"]
+        .sum()
+        .sort_values(by=["category", "name"])
+    )
+
+    grocery_list = []
+    for _, row in grocery_df.iterrows():
+        grocery_list.append({
+            "category": row["category"],
+            "item": f"{row['name']} - {round(row['qty'], 1)} {row['unit']}"
+        })
+
+    return grocery_list
+def generate_weekly_grocery_list(meal_plan: list) -> list:
+    if not meal_plan:
+        return []
+
+    items = []
+    for day in meal_plan:
+        if isinstance(day, dict):
+            for meal_type in ["breakfast", "lunch", "dinner", "snack"]:
+                meal = day.get(meal_type)
+                if isinstance(meal, dict) and "ingredients" in meal:
+                    for ing in meal["ingredients"]:
+                        if isinstance(ing, dict):
+                            items.append(ing)
+
+    if not items:
+        return []
+
+    df = pd.DataFrame(items)
+    
+    # Verify required columns exist before grouping
+    if not {"category", "name", "unit", "qty"}.issubset(set(df.columns)):
+        return []
+
+    grocery_df = (
+        df.groupby(["category", "name", "unit"], as_index=False)["qty"]
+        .sum()
+        .sort_values(by=["category", "name"])
+    )
+
+    grocery_list = []
+    for _, row in grocery_df.iterrows():
+        grocery_list.append({
+            "category": row["category"],
+            "item": f"{row['name']} - {round(row['qty'], 1)} {row['unit']}"
+        })
+
+    return grocery_list
