@@ -4,11 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FitForge – AI-Powered Personal Fitness & Lifestyle Planner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Sora:wght@600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
 
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">FIT<span>FORGE</span></div>
     <div class="nav-links">
@@ -17,17 +19,19 @@
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section class="hero">
-    <h1>Your Body. Your Goals. <span>Your Plan.</span></h1>
-    <p>Build smarter workouts, smarter meals and healthier daily habits — all in one unified personal dashboard.</p>
-    <div class="hero-btns">
-      <button class="btn-primary" id="openModalBtn">Get Started</button>
-      <a href="/dashboard" class="btn-secondary">View Dashboard</a>
+    <div class="grid-floor"></div>
+    <div class="hero-copy">
+      <h1>Your Body. Your Goals. <span>Your Plan.</span></h1>
+      <p>Build smarter workouts, smarter meals and healthier daily habits — all in one unified personal dashboard.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" id="openModalBtn">Get Started</button>
+        <a href="/dashboard" class="btn-secondary">View Dashboard</a>
+      </div>
     </div>
+    <div class="hero-3d" id="hero3d" aria-hidden="true"></div>
   </section>
 
-  <!-- Feature Cards Grid -->
   <section class="features">
     <div class="feature-card">
       <div class="feature-icon">🏋️</div>
@@ -61,18 +65,17 @@
     </div>
   </section>
 
-  <!-- Disclaimer Banner (Bottom of Page) -->
   <footer style="padding-bottom: 2rem;">
     <div class="disclaimer-banner">
       <strong>⚠️ Medical & Health Disclaimer:</strong> FitForge recommendations are for general fitness educational purposes only. Always consult a qualified physician or healthcare professional regarding injuries, medical conditions, or extreme diet changes.
     </div>
   </footer>
 
-  <!-- Onboarding Multi-Step Modal -->
+  <!-- Onboarding Multi-Step Modal (unchanged markup) -->
   <div class="modal-overlay" id="onboardingModal">
     <div class="modal-content">
-      <button class="close-modal" id="closeModalBtn">&times;</button>
-      
+      <button class="close-modal" id="closeModalBtn" aria-label="Close">&times;</button>
+
       <div class="progress-dots">
         <div class="dot active" id="dot1"></div>
         <div class="dot" id="dot2"></div>
@@ -82,7 +85,6 @@
       </div>
 
       <form id="onboardingForm">
-        <!-- STEP 1: Basic Info -->
         <div class="wizard-step active" id="step1">
           <h2>Step 1: Basic Details</h2>
           <div class="form-group">
@@ -114,7 +116,6 @@
           </div>
         </div>
 
-        <!-- STEP 2: Body / Physique -->
         <div class="wizard-step" id="step2">
           <h2>Step 2: Body & Training</h2>
           <div class="form-group">
@@ -151,7 +152,6 @@
           </div>
         </div>
 
-        <!-- STEP 3: Fitness Goal -->
         <div class="wizard-step" id="step3">
           <h2>Step 3: Primary Fitness Goal</h2>
           <div class="form-group">
@@ -178,7 +178,6 @@
           </div>
         </div>
 
-        <!-- STEP 4: Lifestyle -->
         <div class="wizard-step" id="step4">
           <h2>Step 4: Lifestyle Habits</h2>
           <div class="form-group">
@@ -208,7 +207,6 @@
           </div>
         </div>
 
-        <!-- STEP 5: Equipment & Submit -->
         <div class="wizard-step" id="step5">
           <h2>Step 5: Available Equipment</h2>
           <div class="form-group">
@@ -229,24 +227,22 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script>
-    // Modal Toggle Logic
+    // ---------- Original app logic (unchanged) ----------
     const modal = document.getElementById('onboardingModal');
     document.getElementById('openModalBtn').onclick = () => modal.classList.add('active');
     document.getElementById('closeModalBtn').onclick = () => modal.classList.remove('active');
 
-    // Multi-Step Navigation Logic
     function showStep(stepNum) {
       document.querySelectorAll('.wizard-step').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.dot').forEach(el => el.classList.remove('active'));
       document.getElementById('step' + stepNum).classList.add('active');
       document.getElementById('dot' + stepNum).classList.add('active');
     }
-
     function nextStep(current) { showStep(current + 1); }
     function prevStep(current) { showStep(current - 1); }
 
-    // Form Submission & API Call
     document.getElementById('onboardingForm').onsubmit = async (e) => {
       e.preventDefault();
       const payload = {
@@ -267,7 +263,6 @@
         diet_preference: document.getElementById('diet_preference').value,
         equipment: document.getElementById('equipment').value
       };
-
       try {
         const response = await fetch('/api/user', {
           method: 'POST',
@@ -283,6 +278,96 @@
         alert('Failed to save profile. Ensure backend is running.');
       }
     };
+
+    // ---------- 3D tilt on feature cards ----------
+    document.querySelectorAll('.feature-card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const b = card.getBoundingClientRect();
+        const x = (e.clientX - b.left) / b.width, y = (e.clientY - b.top) / b.height;
+        card.style.setProperty('--ry', ((x - .5) * 14) + 'deg');
+        card.style.setProperty('--rx', ((.5 - y) * 14) + 'deg');
+        card.style.setProperty('--mx', (x * 100) + '%');
+        card.style.setProperty('--my', (y * 100) + '%');
+      });
+      card.addEventListener('mouseleave', () => {
+        card.style.setProperty('--rx', '0deg');
+        card.style.setProperty('--ry', '0deg');
+      });
+    });
+
+    // ---------- Hero: 3D forged dumbbell ----------
+    (function () {
+      const box = document.getElementById('hero3d');
+      if (!window.THREE || !box) return;
+      try {
+        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+        box.appendChild(renderer.domElement);
+
+        const scene = new THREE.Scene();
+        const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 100);
+        cam.position.set(0, 0.4, 10);
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.45));
+        const key = new THREE.DirectionalLight(0xffffff, 1.3); key.position.set(3, 5, 6); scene.add(key);
+        const green = new THREE.PointLight(0x10b981, 3, 20); green.position.set(-5, -2, 4); scene.add(green);
+        const cyan = new THREE.PointLight(0x22d3ee, 2.2, 20); cyan.position.set(5, 3, -3); scene.add(cyan);
+
+        const steel = new THREE.MeshStandardMaterial({ color: 0x9aa5b1, metalness: 0.85, roughness: 0.25 });
+        const iron = new THREE.MeshStandardMaterial({ color: 0x1a2027, metalness: 0.75, roughness: 0.35 });
+        const glow = new THREE.MeshStandardMaterial({ color: 0x10b981, emissive: 0x10b981, emissiveIntensity: 0.9 });
+
+        const bell = new THREE.Group();
+        const bar = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 5.2, 32), steel);
+        bar.rotation.z = Math.PI / 2; bell.add(bar);
+
+        const plates = [[1.05, 1.4, 0.36], [1.45, 1.1, 0.3], [1.82, 0.82, 0.24]]; // x, radius, thickness
+        [-1, 1].forEach(s => {
+          plates.forEach(([x, r, t], i) => {
+            const p = new THREE.Mesh(new THREE.CylinderGeometry(r, r, t, 56), iron);
+            p.rotation.z = Math.PI / 2; p.position.x = s * x; bell.add(p);
+            const ring = new THREE.Mesh(new THREE.TorusGeometry(r, 0.025, 12, 72), i === 0 ? glow : steel);
+            ring.rotation.y = Math.PI / 2; ring.position.x = s * (x + t / 2); bell.add(ring);
+          });
+          const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.18, 32), steel);
+          collar.rotation.z = Math.PI / 2; collar.position.x = s * 2.15; bell.add(collar);
+        });
+        bell.rotation.set(0.25, -0.6, -0.28);
+        scene.add(bell);
+
+        const N = 220, pos = new Float32Array(N * 3);
+        for (let i = 0; i < N * 3; i++) pos[i] = (Math.random() - 0.5) * 14;
+        const dust = new THREE.Points(
+          new THREE.BufferGeometry().setAttribute('position', new THREE.BufferAttribute(pos, 3)),
+          new THREE.PointsMaterial({ color: 0x34d399, size: 0.035, transparent: true, opacity: 0.7 })
+        );
+        scene.add(dust);
+
+        function resize() {
+          const w = box.clientWidth, h = box.clientHeight;
+          renderer.setSize(w, h, false); cam.aspect = w / h; cam.updateProjectionMatrix();
+          cam.position.z = w < 420 ? 12 : 10;
+        }
+        resize(); addEventListener('resize', resize);
+
+        let mx = 0, my = 0, t = 0, intro = still ? 1 : 0;
+        addEventListener('mousemove', e => { mx = e.clientX / innerWidth - 0.5; my = e.clientY / innerHeight - 0.5; });
+
+        function frame() {
+          t += 0.01; intro = Math.min(1, intro + 0.02);
+          const e = 1 - Math.pow(1 - intro, 3);
+          bell.scale.setScalar(0.5 + 0.5 * e);
+          bell.rotation.y += (-0.6 + t * 0.6 + mx * 1.2 - bell.rotation.y) * 0.05;
+          bell.rotation.x += (0.25 + my * 0.6 - bell.rotation.x) * 0.05;
+          bell.position.y = Math.sin(t * 2) * 0.12;
+          dust.rotation.y = t * 0.05;
+          renderer.render(scene, cam);
+          if (!still) requestAnimationFrame(frame);
+        }
+        frame();
+      } catch (err) { /* no WebGL: the page still works without the 3D scene */ }
+    })();
   </script>
 </body>
 </html>
