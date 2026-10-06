@@ -4,127 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FitForge – Daily Dashboard</title>
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" href="/static/css/style.css?v=3">
   <style>
     /* Dashboard-Specific Layouts */
-    .dashboard-container {
-      padding: 2rem 8%;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-    .welcome-header {
-      margin-bottom: 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .welcome-header h1 {
-      font-size: 2.2rem;
-    }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-    .metric-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem;
-      position: relative;
-    }
-    .metric-title {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.5rem;
-    }
-    .metric-value {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: var(--text-primary);
-    }
-    .metric-sub {
-      font-size: 0.85rem;
-      color: var(--accent-green);
-      margin-top: 0.4rem;
-    }
-    .progress-bar-bg {
-      width: 100%;
-      height: 8px;
-      background: #1f1f26;
-      border-radius: 4px;
-      margin-top: 0.8rem;
-      overflow: hidden;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--accent-green);
-      width: 0%;
-      transition: width 0.5s ease;
-    }
-    .dashboard-grid-2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-    }
-    @media (max-width: 900px) {
-      .dashboard-grid-2 { grid-template-columns: 1fr; }
-    }
-    .section-card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-    }
-    .section-title {
-      font-size: 1.4rem;
-      margin-bottom: 1.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .exercise-item, .meal-item, .goal-item {
-      background: #0d0d11;
-      border: 1px solid var(--card-border);
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      margin-bottom: 0.8rem;
-    }
-    .exercise-header {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 700;
-    }
-    .exercise-details {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-top: 0.3rem;
-    }
-    .chart-container {
-      text-align: center;
-      margin-top: 1rem;
-    }
-    .chart-container img {
-      max-width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--card-border);
-    }
-    .tips-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    .tips-list li {
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--card-border);
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
+    .dashboard-container { padding: 2rem 8%; max-width: 1300px; margin: 0 auto; }
+    .welcome-header { margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .welcome-header h1 { font-size: 2.2rem; }
+    .header-actions { display: flex; gap: .8rem; flex-wrap: wrap; align-items: center; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem; }
+    .metric-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 1.5rem; position: relative; }
+    .metric-title { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+    .metric-value { font-size: 1.8rem; font-weight: 800; color: var(--text-primary); }
+    .metric-sub { font-size: 0.85rem; color: var(--accent-green); margin-top: 0.4rem; }
+    .progress-bar-bg { width: 100%; height: 8px; background: #1f1f26; border-radius: 4px; margin-top: 0.8rem; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: var(--accent-green); width: 0%; transition: width 0.5s ease; }
+    .dashboard-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2.5rem; }
+    @media (max-width: 900px) { .dashboard-grid-2 { grid-template-columns: 1fr; } }
+    .section-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius-lg); padding: 2rem; }
+    .section-title { font-size: 1.4rem; margin-bottom: 1.2rem; display: flex; align-items: center; justify-content: space-between; }
+    .exercise-item, .meal-item, .goal-item { background: #0d0d11; border: 1px solid var(--card-border); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 0.8rem; }
+    .exercise-header { display: flex; justify-content: space-between; font-weight: 700; }
+    .exercise-details { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .chart-container { text-align: center; margin-top: 1rem; }
+    .chart-container img { max-width: 100%; border-radius: var(--radius-md); border: 1px solid var(--card-border); }
+    .tips-list { list-style-type: none; padding: 0; }
+    .tips-list li { padding: 0.6rem 0; border-bottom: 1px solid var(--card-border); color: var(--text-muted); font-size: 0.95rem; }
     .tips-list li:last-child { border-bottom: none; }
   </style>
 </head>
@@ -140,14 +44,16 @@
   </nav>
 
   <div class="dashboard-container">
-    
+
     <!-- Welcome Header -->
     <div class="welcome-header">
       <div>
         <h1 id="userGreeting">Good Day, Fitness Athlete! 🚀</h1>
         <p style="color: var(--text-muted);" id="userGoalSub">Goal: Muscle Gain | Plan Active</p>
       </div>
-      <div>
+      <div class="header-actions">
+        <!-- Grocery list button -->
+        <button class="btn-primary" onclick="openGroceryModal()">🛒 Generate Weekly Grocery List</button>
         <a href="/" class="btn-secondary" style="font-size: 0.85rem;">Edit Profile / Reset</a>
       </div>
     </div>
@@ -182,8 +88,6 @@
 
     <!-- Two Column Main Workspace -->
     <div class="dashboard-grid-2">
-      
-      <!-- Column 1: Today's Workout Split -->
       <div class="section-card">
         <div class="section-title">
           <span>🏋️ Workout Routine</span>
@@ -194,7 +98,6 @@
         </div>
       </div>
 
-      <!-- Column 2: Today's Nutrition Plan -->
       <div class="section-card">
         <div class="section-title">
           <span>🥗 Meal Plan</span>
@@ -204,13 +107,10 @@
           <p style="color: var(--text-muted);">Loading meal plan...</p>
         </div>
       </div>
-
     </div>
 
     <!-- Two Column Lower Workspace: Tracking & Analytics -->
     <div class="dashboard-grid-2">
-      
-      <!-- Column 1: Interactive Daily Log & Stress Tips -->
       <div class="section-card">
         <div class="section-title"><span>📝 Log Today's Progress</span></div>
         <form id="quickLogForm" style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
@@ -243,7 +143,6 @@
         </div>
       </div>
 
-      <!-- Column 2: Matplotlib Chart & Productivity -->
       <div class="section-card">
         <div class="section-title"><span>📊 Analytics & Trends</span></div>
         <div class="chart-container" id="chartContainer">
@@ -258,29 +157,31 @@
             <input type="text" id="newGoalTitle" class="form-control" placeholder="Add daily task (e.g. Study DSA 1hr)">
             <button class="btn-primary" id="addGoalBtn" style="white-space: nowrap;">Add</button>
           </div>
-          <div id="productivityList">
-            <!-- Dynamic Goals list -->
-          </div>
+          <div id="productivityList"></div>
         </div>
       </div>
-
     </div>
 
   </div>
 
-  <script src="/static/js/dashboard.js"></script>
+  <!-- Grocery Modal -->
+  <div id="groceryModal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="groceryTitle">
+    <div class="modal-content">
+      <button class="close-btn" onclick="closeGroceryModal()" aria-label="Close">&times;</button>
+      <h2 id="groceryTitle">🛒 Weekly Smart Grocery List</h2>
+      <div class="grocery-progress">
+        <div class="grocery-bar"><i id="groceryBar"></i></div>
+        <span id="groceryCount">0 / 0 items</span>
+      </div>
+      <div id="groceryListContainer" class="grocery-checklist"></div>
+      <div class="grocery-actions">
+        <button class="btn-secondary" onclick="copyGroceryList(this)">Copy list</button>
+        <button class="btn-secondary" onclick="shareGroceryList()">Share on WhatsApp</button>
+        <button class="btn-secondary" onclick="clearGroceryChecks()">Reset ticks</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/js/dashboard.js?v=3"></script>
 </body>
 </html>
-<!-- Grocery List Trigger Button -->
-<button class="btn-primary" onclick="openGroceryModal()">🛒 Generate Weekly Grocery List</button>
-
-<!-- Grocery Modal -->
-<div id="groceryModal" class="modal" style="display: none;">
-  <div class="modal-content">
-    <span class="close-btn" onclick="closeGroceryModal()">&times;</span>
-    <h2>🛒 Weekly Smart Grocery List</h2>
-    <div id="groceryListContainer" class="grocery-checklist">
-      <!-- Dynamic checkboxes injected here -->
-    </div>
-  </div>
-</div>
