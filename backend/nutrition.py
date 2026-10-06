@@ -84,3 +84,47 @@ if __name__ == "__main__":
     print(f"Total Plan Calories: {plan['plan_totals']['total_calories']} kcal | Protein: {plan['plan_totals']['total_protein']} g")
     for meal_type, info in plan['meals'].items():
         print(f"  [{meal_type}] {info['item']} -> {info['calories']} kcal | {info['protein_g']}g P")
+        # Add this at the bottom of backend/nutrition.py
+
+def generate_weekly_grocery_list(meal_plan: list) -> list:
+    """
+    Aggregates ingredients from a user's weekly meal plan 
+    into a consolidated grocery checklist.
+    """
+    items = []
+    
+    # Iterate through each day in the meal plan
+    for day in meal_plan:
+        # Check standard meal keys
+        for meal_type in ["breakfast", "lunch", "dinner", "snack"]:
+            meal = day.get(meal_type)
+            if isinstance(meal, dict) and "ingredients" in meal:
+                for ing in meal["ingredients"]:
+                    items.append(ing)
+                    
+    if not items:
+        return []
+        
+    # Group and calculate quantities using Pandas
+    df = pd.DataFrame(items)
+    
+    # Ensure necessary columns exist before grouping
+    required_cols = {"category", "name", "unit", "qty"}
+    if not required_cols.issubset(df.columns):
+        return []
+
+    grocery_df = (
+        df.groupby(["category", "name", "unit"], as_index=False)["qty"]
+        .sum()
+        .sort_values(by=["category", "name"])
+    )
+    
+    # Format list for frontend response
+    grocery_list = []
+    for _, row in grocery_df.iterrows():
+        grocery_list.append({
+            "category": row["category"],
+            "item": f"{row['name']} - {round(row['qty'], 1)} {row['unit']}"
+        })
+        
+    return grocery_list

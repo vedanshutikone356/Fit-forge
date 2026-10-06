@@ -279,3 +279,13 @@ def update_productivity_goal(goal_id: int, completed: int = Body(..., embed=True
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+@app.get("/api/grocery-list")
+def get_grocery_list(user_id: int = 1):
+    # Fetch meal plan for user from SQLite / calculation engine
+    meal_plan = fetch_user_weekly_meals(user_id)  # Helper retrieving 7-day meal dict
+    
+    if not meal_plan:
+        raise HTTPException(status_code=404, detail="No active meal plan found.")
+        
+    grocery_data = generate_weekly_grocery_list(meal_plan)
+    return {"status": "success", "grocery_list": grocery_data}

@@ -228,3 +228,40 @@ async function toggleGoal(goalId, completed) {
     console.error("Failed to toggle goal:", err);
   }
 }
+async function openGroceryModal() {
+  document.getElementById('groceryModal').style.display = 'block';
+  const container = document.getElementById('groceryListContainer');
+  container.innerHTML = '<p>Aggregating weekly ingredients...</p>';
+
+  try {
+    const response = await fetch('/api/grocery-list');
+    const data = await response.json();
+
+    if (data.grocery_list && data.grocery_list.length > 0) {
+      let html = '';
+      let currentCategory = '';
+
+      data.grocery_list.forEach(item => {
+        if (item.category !== currentCategory) {
+          currentCategory = item.category;
+          html += `<h3>${currentCategory}</h3>`;
+        }
+        html += `
+          <label class="grocery-item">
+            <input type="checkbox" onchange="this.parentElement.classList.toggle('checked')">
+            <span>${item.item}</span>
+          </label><br>
+        `;
+      });
+      container.innerHTML = html;
+    } else {
+      container.innerHTML = '<p>No meals generated yet. Create a meal plan first!</p>';
+    }
+  } catch (error) {
+    container.innerHTML = '<p>Error loading grocery list.</p>';
+  }
+}
+
+function closeGroceryModal() {
+  document.getElementById('groceryModal').style.display = 'none';
+}

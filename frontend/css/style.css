@@ -264,3 +264,7 @@ input[type=range] { width: 100%; accent-color: var(--accent-green); }
   .kcal-grid { grid-template-columns: 1fr; }
   .preview { transform: none; }
 }
+.grocery-item.checked span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}

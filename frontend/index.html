@@ -483,3 +483,16 @@
   </script>
 </body>
 </html>
+<!-- Grocery List Trigger Button -->
+<button class="btn-primary" onclick="openGroceryModal()">🛒 Generate Weekly Grocery List</button>
+
+<!-- Grocery Modal -->
+<div id="groceryModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeGroceryModal()">&times;</span>
+    <h2>🛒 Weekly Smart Grocery List</h2>
+    <div id="groceryListContainer" class="grocery-checklist">
+      <!-- Dynamic checkboxes injected here -->
+    </div>
+  </div>
+</div>
